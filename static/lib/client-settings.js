@@ -43,17 +43,22 @@ define('forum/account/canned-responses', ['csrf', 'vendor/jquery/serializeObject
 	};
 
 	settings.delete = function() {
-		$.ajax({
-			type: 'DELETE',
-			url: window.location.href + '/' + $(this).attr('data-response-id'),
-			headers: {
-				'x-csrf-token': csrf.get()
+		var responseId = $(this).parents('.list-group-item').attr('data-response-id');
+		bootbox.confirm('Are you sure you want to delete this response?', function(confirm) {
+			if (confirm) {
+				$.ajax({
+					type: 'DELETE',
+					url: window.location.href + '/' + responseId,
+					headers: {
+						'x-csrf-token': csrf.get()
+					}
+				}).success(function() {
+					ajaxify.refresh();
+					modal.modal('hide');
+				}).error(function(e) {
+					app.alertError('Could not delete response');
+				});
 			}
-		}).success(function() {
-			ajaxify.refresh();
-			modal.modal('hide');
-		}).error(function(e) {
-			app.alertError('Could not delete response');
 		});
 
 		return false;	// I normally use stopPropagation, but for bootbox that doesn't work...
