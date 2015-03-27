@@ -30,7 +30,7 @@
 						responseEl.siblings().removeClass('active');
 						responseEl.addClass('active');
 
-						submitEl.data('text', ($(this).find('pre').text()));
+						submitEl.data('text', ($(this).find('input[type="hidden"]').val()));
 						submitEl.removeAttr('disabled');
 					});
 

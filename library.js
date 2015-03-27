@@ -17,10 +17,11 @@ plugin.init = function(params, callback) {
 	// router.get('/api/admin/plugins/canned-responses', controllers.renderAdminPage);
 
 	// User settings routes
-	routeHelpers.setupPageRoute(router, '/user/:userslug/canned-responses', hostMiddleware, checks, controllers.list);
+	routeHelpers.setupPageRoute(router, '/user/:userslug/canned-responses/:responseId?', hostMiddleware, checks, controllers.get);
 	router.route('/user/:userslug/canned-responses/:responseId?')
 		.post(checks, controllers.add)
-		.delete(checks, controllers.delete);
+		.delete(checks, controllers.delete)
+		.put(checks, controllers.update);
 
 	callback();
 };
