@@ -1,18 +1,45 @@
 "use strict";
 
 (function() {
-	/*
-		This file shows how client-side javascript can be included via a plugin.
-		If you check `plugin.json`, you'll see that this file is listed under "scripts".
-		That array tells NodeBB which files to bundle into the minified javascript
-		that is served to the end user.
+	require(['composer/formatting', 'composer/controls'], function(formatting, controls) {
+		formatting.addButtonDispatch('canned-responses', function(textarea, selectionStart, selectionEnd){
+			$.get(RELATIVE_PATH + '/api/user/' + app.user.userslug + '/canned-responses').success(function(data) {
+				data.hideControls = true;
 
-		Some events you can elect to listen for:
+				templates.parse('partials/canned-responses/list', data, function(html) {
+					var insertIntoComposer = function(ev) {
+							var responseText = submitEl.data('text');
+							controls.insertIntoTextarea(textarea, responseText);
+							controls.updateTextareaSelection(textarea, selectionStart, selectionStart + responseText.length);
+						},
+						modal = bootbox.dialog({
+							title: 'Insert Canned Response',
+							message: html,
+							buttons: {
+								insert: {
+									label: 'Insert',
+									className: 'btn-primary',
+									callback: insertIntoComposer
+								}
+							}
+						}),
+						submitEl = modal.find('.btn-primary').attr('disabled', 'disabled');
 
-		$(document).ready();			Fired when the DOM is ready
-		$(window).on('action:ajaxify.end', function(data) { ... });			"data" contains "url"
-	*/
+					modal.find('.list-group').on('click', '.list-group-item', function() {
+						var responseEl = $(this);
+						responseEl.siblings().removeClass('active');
+						responseEl.addClass('active');
 
-	console.log('nodebb-plugin-quickstart: loaded');
-	// Note how this is shown in the console on the first load of every page
+						submitEl.data('text', ($(this).find('pre').text()));
+						submitEl.removeAttr('disabled');
+					});
+
+					// Go back to focusing on the textarea after modal closes (since that action steals focus)
+					modal.on('hidden.bs.modal', function() {
+						$(textarea).focus();
+					});
+				});
+			});
+		});
+	});
 }());

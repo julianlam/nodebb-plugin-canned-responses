@@ -1,10 +1,11 @@
 {
-	"id": "nodebb-plugin-quickstart",
-	"url": "https://github.com/NodeBB/nodebb-plugin-quickstart",
+	"id": "nodebb-plugin-canned-responses",
+	"url": "https://github.com/julianlam/nodebb-plugin-canned-responses",
 	"library": "./library.js",
 	"hooks": [
 		{ "hook": "static:app.load", "method": "init" },
-		{ "hook": "filter:admin.header.build", "method": "addAdminNavigation" }
+		{ "hook": "filter:user.profileLinks", "method": "addProfileItem" },
+		{ "hook": "filter:composer.formatting", "method": "addComposerButton" }
 	],
 	"staticDirs": {
 		"static": "./static"
@@ -14,7 +15,7 @@
 	],
 	"scripts": [
 		"static/lib/main.js",
-		"static/lib/admin.js"
+		"static/lib/client-settings.js"
 	],
 	"templates": "static/templates"
 }
