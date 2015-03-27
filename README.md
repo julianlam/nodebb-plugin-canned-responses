@@ -6,7 +6,7 @@ Comes in handy for getting across messages that you often find yourself typing o
 
 ## Installation
 
-    Install this plugin via plugins page in your ACP. Alternatively, `npm install nodebb-plugin-canned-responses`
+Install this plugin via plugins page in your ACP. Alternatively, `npm install nodebb-plugin-canned-responses`
 
 ## Screenshots
 
