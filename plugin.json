@@ -5,7 +5,8 @@
 	"hooks": [
 		{ "hook": "static:app.load", "method": "init" },
 		{ "hook": "filter:user.profileLinks", "method": "addProfileItem" },
-		{ "hook": "filter:composer.formatting", "method": "addComposerButton" }
+		{ "hook": "filter:composer.formatting", "method": "addComposerButton" },
+		{ "hook": "filter:parse.title", "method": "addTitles" }
 	],
 	"staticDirs": {
 		"static": "./static"

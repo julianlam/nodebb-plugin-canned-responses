@@ -3,7 +3,8 @@
 var controllers = require('./lib/controllers'),
 	middleware = require('./lib/middleware'),
 
-	plugin = {};
+	plugin = {},
+	titleMatch = /^user\/.+\/canned-responses$/;
 
 plugin.init = function(params, callback) {
 	var router = params.router,
@@ -41,6 +42,14 @@ plugin.addProfileItem = function(links, callback) {
 plugin.addComposerButton = function(payload, callback) {
 	payload.options.push({ name: 'canned-responses', className: 'fa fa-bullhorn' });
 	callback(null, payload);
+};
+
+plugin.addTitles = function(data, callback) {
+	if (titleMatch.test(data.fragment)) {
+		data.parsed = 'Canned Responses';
+	}
+
+	callback(null, data);
 };
 
 module.exports = plugin;
