@@ -1,6 +1,6 @@
 {
   "name": "nodebb-plugin-canned-responses",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Allows users to save responses for use in the future",
   "main": "library.js",
   "repository": {
