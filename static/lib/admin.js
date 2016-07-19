@@ -7,21 +7,40 @@ define('admin/plugins/canned-responses', ['settings', 'canned-responses'], funct
 
 	ACP.init = function() {
 		cannedResponses.init();
-		// Settings.load('canned-responses', $('.canned-responses-settings'));
 
 		// $('#save').on('click', function() {
-		// 	Settings.save('canned-responses', $('.canned-responses-settings'), function() {
+		// 	var payload = {};
+
+		// 	$('.category-defaults select').each(function(idx, value) {
+		// 		payload[this.getAttribute('data-cid')] = $(value).val() || '';
+		// 	});
+
+		// 	socket.emit('admin.settings.set', {
+		// 		hash: 'canned-responses:defaults',
+		// 		values: payload
+		// 	}, function (err) {
 		// 		app.alert({
-		// 			type: 'success',
-		// 			alert_id: 'canned-responses-saved',
 		// 			title: 'Settings Saved',
-		// 			message: 'Please reload your NodeBB to apply these settings',
-		// 			clickfn: function() {
-		// 				socket.emit('admin.reload');
-		// 			}
+		// 			type: 'success',
+		// 			timeout: 2500
 		// 		});
 		// 	});
 		// });
+		Settings.load('canned-responses:defaults', $('.canned-responses-defaults'));
+
+		$('#save').on('click', function() {
+			Settings.save('canned-responses:defaults', $('.canned-responses-defaults'), function() {
+				app.alert({
+					type: 'success',
+					alert_id: 'canned-responses-saved',
+					title: 'Settings Saved',
+					message: 'Please reload your NodeBB to apply these settings',
+					clickfn: function() {
+						socket.emit('admin.reload');
+					}
+				});
+			});
+		});
 	};
 
 	return ACP;
