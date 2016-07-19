@@ -4,7 +4,7 @@ $(document).ready(function() {
 	$(window).on('action:composer.enhanced', function() {
 		require(['composer/formatting', 'composer/controls'], function(formatting, controls) {
 			formatting.addButtonDispatch('canned-responses', function(textarea, selectionStart, selectionEnd) {
-				$.get(RELATIVE_PATH + '/api/user/' + app.user.userslug + '/canned-responses').success(function(data) {
+				$.get(RELATIVE_PATH + '/canned-responses').success(function(data) {
 					data.hideControls = true;
 	
 					templates.parse('partials/canned-responses/list', data, function(html) {

@@ -4,6 +4,7 @@
 	"library": "./library.js",
 	"hooks": [
 		{ "hook": "static:app.load", "method": "init" },
+		{ "hook": "filter:admin.header.build", "method": "addAdminNavigation" },
 		{ "hook": "filter:user.profileLinks", "method": "addProfileItem" },
 		{ "hook": "filter:composer.formatting", "method": "addComposerButton" },
 		{ "hook": "filter:parse.title", "method": "addTitles" }
@@ -18,5 +19,11 @@
 		"static/lib/main.js",
 		"static/lib/client-settings.js"
 	],
+	"acpScripts": [
+		"static/lib/admin.js"
+	],
+	"modules": {
+		"canned-responses.js": "static/lib/canned-responses.js"
+	},
 	"templates": "static/templates"
 }
