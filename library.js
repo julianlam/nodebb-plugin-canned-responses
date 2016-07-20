@@ -31,6 +31,7 @@ plugin.init = function(params, callback) {
 
 	// Global routes
 	router.get('/canned-responses', controllers.getAll);
+	router.get('/canned-responses/defaults', controllers.getDefaults);
 
 	callback();
 };

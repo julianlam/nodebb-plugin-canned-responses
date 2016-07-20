@@ -1,8 +1,23 @@
 "use strict";
+/* globals bootbox, config */
 
 $(document).ready(function() {
-	$(window).on('action:composer.enhanced', function() {
-		require(['composer/formatting', 'composer/controls'], function(formatting, controls) {
+	var defaults;
+
+	$.get(config.relative_path + '/canned-responses/defaults', function(data) {
+		defaults = data;
+	});
+
+	require(['composer/formatting', 'composer/controls'], function(formatting, controls) {
+		$(window).on('action:composer.loaded', function(e, data) {
+			var cid = parseInt(data.composerData.cid, 10);
+			var textarea = $('#cmp-uuid-' + data.post_uuid + ' textarea');
+			if (defaults[cid]) {
+				controls.insertIntoTextarea(textarea, defaults[cid]);
+			}
+		});
+
+		$(window).on('action:composer.enhanced', function() {
 			formatting.addButtonDispatch('canned-responses', function(textarea, selectionStart, selectionEnd) {
 				$.get(RELATIVE_PATH + '/canned-responses').success(function(data) {
 					data.hideControls = true;
