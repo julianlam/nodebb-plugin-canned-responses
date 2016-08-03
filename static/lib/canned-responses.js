@@ -1,4 +1,7 @@
-define(['csrf', 'vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function(csrf) {
+'use strict';
+/* globals define, templates, bootbox, RELATIVE_PATH, config, ajaxify, app */
+
+define(['vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function() {
 	var settings = {};
 
 	settings.init = function() {
@@ -96,7 +99,6 @@ define(['csrf', 'vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], 
 					}
 				}).success(function() {
 					ajaxify.refresh();
-					modal.modal('hide');
 				}).error(function(e) {
 					app.alertError('Could not delete response');
 				});
