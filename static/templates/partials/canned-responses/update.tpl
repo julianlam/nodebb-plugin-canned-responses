@@ -3,7 +3,7 @@
 		<div class="form-group">
 			<label for="title">Response Title</label>
 			<input class="form-control" type="text" id="title" name="title" value="{title}" />
-			<p class="help-block">
+			<p class="text-muted">
 				A short title that will be used to refer to this canned response. The title will not be
 				shown in the post.
 			</p>

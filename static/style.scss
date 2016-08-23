@@ -1,3 +1,5 @@
+$gray-lighter: lighten(#000, 93.5%);
+
 .canned-responses-list {
 	.list-group-item {
 		max-height: 250px;
@@ -6,6 +8,6 @@
 
 	.list-group-item-heading {
 		padding-bottom: 0.5em;
-		border-bottom: 1px solid @gray-lighter;
+		border-bottom: 1px solid $gray-lighter;
 	}
 }
