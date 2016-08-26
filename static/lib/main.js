@@ -8,16 +8,19 @@ $(document).ready(function() {
 		defaults = data;
 	});
 
-	require(['composer/formatting', 'composer/controls'], function(formatting, controls) {
-		$(window).on('action:composer.loaded', function(e, data) {
+	
+	$(window).on('action:composer.loaded', function(e, data) {
+		require(['composer/controls'], function(controls) {
 			var cid = parseInt(data.composerData.cid, 10);
 			var textarea = $('#cmp-uuid-' + data.post_uuid + ' textarea');
 			if (defaults[cid]) {
 				controls.insertIntoTextarea(textarea, defaults[cid]);
-			}
+			}	
 		});
+	});
 
-		$(window).on('action:composer.enhanced', function() {
+	$(window).on('action:composer.enhanced', function() {
+		require(['composer/formatting', 'composer/controls'], function(formatting, controls) {
 			formatting.addButtonDispatch('canned-responses', function(textarea, selectionStart, selectionEnd) {
 				$.get(RELATIVE_PATH + '/canned-responses').success(function(data) {
 					data.hideControls = true;
