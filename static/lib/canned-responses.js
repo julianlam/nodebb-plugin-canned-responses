@@ -23,7 +23,7 @@ define(['vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function
 		$('button[data-action="edit"]').on('click', function() {
 			var responseId = $(this).parents('.list-group-item').attr('data-response-id');
 
-			$.get(RELATIVE_PATH + '/api/user/' + app.user.userslug + '/canned-responses/' + responseId).success(function(data) {
+			$.get(RELATIVE_PATH + '/api/user/' + app.user.userslug + '/canned-responses/' + responseId).done(function(data) {
 				templates.parse('partials/canned-responses/update', data, function(html) {
 					var modal = bootbox.dialog({
 						title: 'Edit Response',
@@ -56,7 +56,7 @@ define(['vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function
 			headers: {
 				'x-csrf-token': config.csrf_token
 			}
-		}).success(function() {
+		}).done(function() {
 			ajaxify.refresh();
 			modal.modal('hide');
 		}).error(function(e) {
@@ -79,7 +79,7 @@ define(['vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function
 			headers: {
 				'x-csrf-token': config.csrf_token
 			}
-		}).success(function() {
+		}).done(function() {
 			ajaxify.refresh();
 			modal.modal('hide');
 		}).error(function(e) {
@@ -97,7 +97,7 @@ define(['vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function
 					headers: {
 						'x-csrf-token': config.csrf_token
 					}
-				}).success(function() {
+				}).done(function() {
 					ajaxify.refresh();
 				}).error(function(e) {
 					app.alertError('Could not delete response');
