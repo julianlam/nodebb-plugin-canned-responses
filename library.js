@@ -36,8 +36,8 @@ plugin.init = function(params, callback) {
 	callback();
 };
 
-plugin.addProfileItem = function(links, callback) {
-	links.push({
+plugin.addProfileItem = function(data, callback) {
+	data.links.push({
 		id: 'canned-responses',
 		route: 'canned-responses',
 		icon: 'fa-bullhorn',
@@ -45,7 +45,7 @@ plugin.addProfileItem = function(links, callback) {
 		public: false
 	});
 
-	callback(null, links);
+	callback(null, data);
 };
 
 plugin.addAdminNavigation = function(header, callback) {
