@@ -7,7 +7,7 @@ define(['vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function
 	settings.init = function() {
 		$('button[data-action="create"]').on('click', function() {
 			templates.parse('partials/canned-responses/update', {}, function(html) {
-				bootbox.dialog({
+				var modal = bootbox.dialog({
 					title: 'Create New Response',
 					message: html,
 					buttons: {
@@ -16,6 +16,12 @@ define(['vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function
 							callback: settings.create
 						}
 					}
+				});
+
+				modal.on('shown.bs.modal', function () {
+					modal.find('form').on('submit', function () {
+						return false;
+					});
 				});
 			});
 		});
@@ -59,7 +65,7 @@ define(['vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function
 		}).done(function() {
 			ajaxify.refresh();
 			modal.modal('hide');
-		}).error(function(e) {
+		}).fail(function(e) {
 			app.alertError('Could not save new response');
 		});
 
@@ -82,7 +88,7 @@ define(['vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function
 		}).done(function() {
 			ajaxify.refresh();
 			modal.modal('hide');
-		}).error(function(e) {
+		}).fail(function(e) {
 			app.alertError('Could not update response');
 		});
 	};
@@ -99,7 +105,7 @@ define(['vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function
 					}
 				}).done(function() {
 					ajaxify.refresh();
-				}).error(function(e) {
+				}).fail(function(e) {
 					app.alertError('Could not delete response');
 				});
 			}
