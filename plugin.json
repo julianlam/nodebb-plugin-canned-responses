@@ -25,5 +25,6 @@
 	"modules": {
 		"canned-responses.js": "static/lib/canned-responses.js"
 	},
-	"templates": "static/templates"
+	"templates": "static/templates",
+	"languages": "static/language"
 }

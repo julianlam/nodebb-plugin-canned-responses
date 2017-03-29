@@ -41,7 +41,7 @@ plugin.addProfileItem = function(data, callback) {
 		id: 'canned-responses',
 		route: 'canned-responses',
 		icon: 'fa-bullhorn',
-		name: 'Canned Responses',
+		name: '[[canned-responses:title]]',
 		public: false
 	});
 
@@ -52,7 +52,7 @@ plugin.addAdminNavigation = function(header, callback) {
 	header.plugins.push({
 		route: '/plugins/canned-responses',
 		icon: 'fa-bullhorn',
-		name: 'Canned Responses'
+		name: '[[canned-responses:title]]'
 	});
 
 	callback(null, header);
@@ -65,7 +65,7 @@ plugin.addComposerButton = function(payload, callback) {
 
 plugin.addTitles = function(data, callback) {
 	if (titleMatch.test(data.fragment)) {
-		data.parsed = 'Canned Responses';
+		data.parsed = '[[canned-responses:title]]';
 	}
 
 	callback(null, data);
