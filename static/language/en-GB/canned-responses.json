@@ -1,3 +1,4 @@
 {
-	"title": "Canned Responses"
+	"title": "Canned Responses",
+	"response-too-long": "Your canned response must not exceed %1 characters"
 }

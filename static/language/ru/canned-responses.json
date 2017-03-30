@@ -1,3 +1,4 @@
 {
-	"title": "Готовые ответы"
+	"title": "Готовые ответы",
+	"response-too-long": "Your canned response must not exceed %1 characters"
 }

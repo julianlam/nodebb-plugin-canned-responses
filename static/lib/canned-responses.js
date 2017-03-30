@@ -55,6 +55,12 @@ define(['vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function
 			formEl = modal.find('form'),
 			payload = formEl.serializeObject();
 
+		var payloadLen = formEl.find('[name="text"]').val().length;
+		if (payloadLen > config.maximumPostLength) {
+			app.alertError('[[canned-responses:response-too-long, ' + config.maximumPostLength + ']]');
+			return false;
+		}
+
 		$.ajax({
 			type: 'POST',
 			url: window.location.href,
@@ -65,7 +71,7 @@ define(['vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function
 		}).done(function() {
 			ajaxify.refresh();
 			modal.modal('hide');
-		}).fail(function(e) {
+		}).fail(function() {
 			app.alertError('Could not save new response');
 		});
 
@@ -78,6 +84,12 @@ define(['vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function
 			payload = formEl.serializeObject(),
 			responseId = modal.data('responseId');
 
+		var payloadLen = formEl.find('[name="text"]').val().length;
+		if (payloadLen > config.maximumPostLength) {
+			app.alertError('[[canned-responses:response-too-long, ' + config.maximumPostLength + ']]');
+			return false;
+		}
+
 		$.ajax({
 			type: 'PUT',
 			url: window.location.href + '/' + responseId,
@@ -88,7 +100,7 @@ define(['vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function
 		}).done(function() {
 			ajaxify.refresh();
 			modal.modal('hide');
-		}).fail(function(e) {
+		}).fail(function() {
 			app.alertError('Could not update response');
 		});
 	};
