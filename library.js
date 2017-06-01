@@ -42,7 +42,13 @@ plugin.addProfileItem = function(data, callback) {
 		route: 'canned-responses',
 		icon: 'fa-bullhorn',
 		name: '[[canned-responses:title]]',
-		public: false
+		visibility: {
+			self: true,
+			other: false,
+			moderator: false,
+			globalMod: false,
+			admin: false,
+		}
 	});
 
 	callback(null, data);
