@@ -10,7 +10,7 @@ plugin.init = function(params, callback) {
 	var router = params.router,
 		hostMiddleware = params.middleware,
 		hostControllers = params.controllers,
-		routeHelpers = module.parent.require('./routes/helpers'),
+		routeHelpers = require.main.require('./src/routes/helpers'),
 		checks = [hostMiddleware.authenticate, hostMiddleware.exposeUid, middleware.restrictToProfileOwner],
 		ACPchecks = [hostMiddleware.authenticate, hostMiddleware.isAdmin];
 		
