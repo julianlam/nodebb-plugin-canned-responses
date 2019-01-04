@@ -8,7 +8,7 @@
 			<button type="button" class="btn btn-danger btn-xs" data-action="delete"><i class="fa fa-times"></i> Delete</button>
 		</div>
 		<!-- ENDIF !hideControls -->
-		<input type="hidden" value="{responses.text_escaped}" />
+		<input type="hidden" value="{responses.text}" />
 		<h4 class="list-group-item-heading">{responses.title}</h4>
 		<p class="list-group-item-text">{responses.html}</p>
 	</div>
