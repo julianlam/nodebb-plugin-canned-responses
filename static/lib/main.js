@@ -8,25 +8,27 @@ $(document).ready(function() {
 		defaults = data;
 	});
 
-	
 	$(window).on('action:composer.loaded', function(e, data) {
 		require(['composer/controls'], function(controls) {
 			var cid = parseInt(data.composerData.cid, 10);
 			var textarea = $('#cmp-uuid-' + data.post_uuid + ' textarea');
 			if (defaults[cid]) {
 				controls.insertIntoTextarea(textarea, defaults[cid]);
-			}	
+			}
 		});
 	});
 
-	$(window).on('action:composer.enhanced', function() {
-		require(['composer/formatting', 'composer/controls'], function(formatting, controls) {
+	require(['composer/formatting', 'composer/controls'], function(formatting, controls) {
+		$(window).on('action:composer.enhanced', function() {
 			formatting.addButtonDispatch('canned-responses', function(textarea, selectionStart, selectionEnd) {
+				// Context for Quill, etc.
+				var context = this;
+
 				openModal(function () {
 					var submitEl = this.find('.btn-primary').attr('disabled', 'disabled');
 					var responseText = submitEl.data('text');
-					controls.insertIntoTextarea(textarea, responseText);
-					controls.updateTextareaSelection(textarea, selectionStart, selectionStart + responseText.length);
+					controls.insertIntoTextarea.bind(context)(textarea, responseText);
+					controls.updateTextareaSelection.bind(context)(textarea, selectionStart, selectionStart + responseText.length);
 
 					// Go back to focusing on the textarea after modal closes (since that action steals focus)
 					this.one('hidden.bs.modal', function() {
