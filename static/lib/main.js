@@ -11,7 +11,7 @@ $(document).ready(function() {
 	$(window).on('action:composer.loaded', function(e, data) {
 		require(['composer/controls'], function(controls) {
 			var cid = parseInt(data.composerData.cid, 10);
-			var textarea = $('#cmp-uuid-' + data.post_uuid + ' textarea');
+			var textarea = $('.composer[data-uuid="' + data.post_uuid + '"] textarea');
 			if (defaults[cid]) {
 				controls.insertIntoTextarea(textarea, defaults[cid]);
 			}
