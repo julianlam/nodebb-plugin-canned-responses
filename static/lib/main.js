@@ -18,6 +18,34 @@ $(document).ready(function() {
 		});
 	});
 
+	$(window).on('action:composer.changeCategory', function(e, data) {
+		require(['composer/controls', 'alerts'], function(controls, alerts) {
+			var cid = parseInt(data.cid, 10);
+			var uuid = data.postContainer.get(0).getAttribute('data-uuid');
+			var textarea = $('.composer[data-uuid="' + uuid + '"] textarea').get(0);
+			var okToClobber = textarea.value === '' || Object.values(defaults).some(function (text) {
+				return text === textarea.value;
+			});
+
+			if (defaults[cid]) {
+				if (okToClobber) {
+					textarea.value = '';
+					controls.insertIntoTextarea(textarea, defaults[cid]);
+				} else {
+					alerts.alert({
+						alert_id: 'canned_response_clobber_warning',
+						title: 'Note',
+						message: 'Default text is being suggested, but you already have text here. Click here to append the suggested text.',
+						timeout: 5000,
+						clickfn: function () {
+							controls.insertIntoTextarea(textarea, '\n\n' + defaults[cid]);
+						}
+					});
+				}
+			}
+		});
+	});
+
 	require(['composer/formatting', 'composer/controls'], function(formatting, controls) {
 		$(window).on('action:composer.enhanced', function() {
 			formatting.addButtonDispatch('canned-responses', function(textarea, selectionStart, selectionEnd) {
