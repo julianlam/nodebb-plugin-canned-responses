@@ -46,8 +46,8 @@ $(document).ready(function() {
 		});
 	});
 
-	require(['composer/formatting', 'composer/controls'], function(formatting, controls) {
-		$(window).on('action:composer.enhanced', function() {
+	$(window).on('action:composer.enhanced', function() {
+		require(['composer/formatting', 'composer/controls'], function(formatting, controls) {
 			formatting.addButtonDispatch('canned-responses', function(textarea, selectionStart, selectionEnd) {
 				// Context for Quill, etc.
 				var context = this;
