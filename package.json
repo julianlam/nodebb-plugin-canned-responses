@@ -26,6 +26,6 @@
   },
   "dependencies": {
     "async": "^2",
-    "string": "^3.3.3"
+    "validator": "^12.2.0"
   }
 }
