@@ -29,7 +29,7 @@ define(['vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function
 		$('button[data-action="edit"]').on('click', function() {
 			var responseId = $(this).parents('.list-group-item').attr('data-response-id');
 
-			$.get(RELATIVE_PATH + '/api/user/' + app.user.userslug + '/canned-responses/' + responseId).done(function(data) {
+			$.get(config.relative_path + '/api/user/' + app.user.userslug + '/canned-responses/' + responseId).done(function(data) {
 				templates.parse('partials/canned-responses/update', data, function(html) {
 					var modal = bootbox.dialog({
 						title: 'Edit Response',
