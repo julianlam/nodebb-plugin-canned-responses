@@ -95,7 +95,7 @@ $(document).ready(function() {
     });
 
 	function openModal (callback) {
-		$.get(RELATIVE_PATH + '/canned-responses').done(function(data) {
+		$.get(config.relative_path + '/canned-responses').done(function(data) {
 			data.hideControls = true;
 
 			templates.parse('partials/canned-responses/list', data, function(html) {
