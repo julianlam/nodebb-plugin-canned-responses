@@ -1,31 +1,30 @@
-"use strict";
-/* globals bootbox, config */
+'use strict';
 
-$(document).ready(function() {
-	var defaults;
+/* globals bootbox, config, document, window, $ */
 
-	$.get(config.relative_path + '/canned-responses/defaults', function(data) {
+$(document).ready(() => {
+	let defaults;
+
+	$.get(`${config.relative_path}/canned-responses/defaults`, (data) => {
 		defaults = data;
 	});
 
-	$(window).on('action:composer.loaded', function(e, data) {
-		require(['composer/controls'], function(controls) {
-			var cid = parseInt(data.composerData.cid, 10);
-			var textarea = $('.composer[data-uuid="' + data.post_uuid + '"] textarea');
+	$(window).on('action:composer.loaded', (evt, data) => {
+		require(['composer/controls'], (controls) => {
+			const cid = parseInt(data.composerData.cid, 10);
+			const textarea = $(`.composer[data-uuid="${data.post_uuid}"] textarea`);
 			if (defaults[cid]) {
 				controls.insertIntoTextarea(textarea, defaults[cid]);
 			}
 		});
 	});
 
-	$(window).on('action:composer.changeCategory', function(e, data) {
-		require(['composer/controls', 'alerts'], function(controls, alerts) {
-			var cid = parseInt(data.cid, 10);
-			var uuid = data.postContainer.get(0).getAttribute('data-uuid');
-			var textarea = $('.composer[data-uuid="' + uuid + '"] textarea').get(0);
-			var okToClobber = textarea.value === '' || Object.values(defaults).some(function (text) {
-				return text === textarea.value;
-			});
+	$(window).on('action:composer.changeCategory', (evt, data) => {
+		require(['composer/controls', 'alerts'], (controls, alerts) => {
+			const cid = parseInt(data.cid, 10);
+			const uuid = data.postContainer.get(0).getAttribute('data-uuid');
+			const textarea = $(`.composer[data-uuid="${uuid}"] textarea`).get(0);
+			const okToClobber = textarea.value === '' || Object.values(defaults).some(text => text === textarea.value);
 
 			if (defaults[cid]) {
 				if (okToClobber) {
@@ -38,68 +37,70 @@ $(document).ready(function() {
 						message: 'Default text is being suggested, but you already have text here. Click here to append the suggested text.',
 						timeout: 5000,
 						clickfn: function () {
-							controls.insertIntoTextarea(textarea, '\n\n' + defaults[cid]);
-						}
+							controls.insertIntoTextarea(textarea, `\n\n${defaults[cid]}`);
+						},
 					});
 				}
 			}
 		});
 	});
 
-	$(window).on('action:composer.enhanced', function() {
-		require(['composer/formatting', 'composer/controls'], function(formatting, controls) {
-			formatting.addButtonDispatch('canned-responses', function(textarea, selectionStart, selectionEnd) {
+	$(window).on('action:composer.enhanced', () => {
+		require(['composer/formatting', 'composer/controls'], (formatting, controls) => {
+			formatting.addButtonDispatch('canned-responses', function (textarea, selectionStart) {
 				// Context for Quill, etc.
-				var context = this;
+				const context = this;
 
 				openModal(function () {
-					var submitEl = this.find('.btn-primary').attr('disabled', 'disabled');
-					var responseText = submitEl.data('text');
+					const submitEl = this.find('.btn-primary').attr('disabled', 'disabled');
+					const responseText = submitEl.data('text');
 					controls.insertIntoTextarea.bind(context)(textarea, responseText);
-					controls.updateTextareaSelection.bind(context)(textarea, selectionStart, selectionStart + responseText.length);
+					controls.updateTextareaSelection
+						.bind(context)(textarea, selectionStart, selectionStart + responseText.length);
 
 					// Go back to focusing on the textarea after modal closes (since that action steals focus)
-					this.one('hidden.bs.modal', function() {
+					this.one('hidden.bs.modal', () => {
 						$(textarea).focus();
 					});
-				})
+				});
 			});
 		});
 	});
 
-	$(window).on('action:composer.loaded', function (ev, data) {
-        if ($.Redactor && $.Redactor.opts.plugins.indexOf('canned-responses') === -1) {
-            $.Redactor.opts.plugins.push('canned-responses');
-        }
-    });
+	$(window).on('action:composer.loaded', () => {
+		if ($.Redactor && $.Redactor.opts.plugins.indexOf('canned-responses') === -1) {
+			$.Redactor.opts.plugins.push('canned-responses');
+		}
+	});
 
-	$(window).on('action:redactor.load', function () {
-        $.Redactor.prototype['canned-responses'] = function () {
-            return {
-                init: function () {
-                    var button = this.button.add('canned-responses', 'Add Canned Response');
-                    this.button.setIcon(button, '<i class="fa fa-bullhorn"></i>');
-                    this.button.addCallback(button, this['canned-responses'].onClick);
-                },
-                onClick: function () {
-					var redactor = this;
+	$(window).on('action:redactor.load', () => {
+		$.Redactor.prototype['canned-responses'] = function () {
+			return {
+				init: function () {
+					const button = this.button.add('canned-responses', 'Add Canned Response');
+					this.button.setIcon(button, '<i class="fa fa-bullhorn"></i>');
+					this.button.addCallback(button, this['canned-responses'].onClick);
+				},
+				onClick: function () {
+					const redactor = this;
 					openModal(function () {
-						var submitEl = this.find('.btn-primary').attr('disabled', 'disabled');
-						var responseText = submitEl.data('text');
+						const submitEl = this.find('.btn-primary').attr('disabled', 'disabled');
+						const responseText = submitEl.data('text');
 
-						redactor.insert.html('<p>' + responseText + '</p>');
+						redactor.insert.html(`<p>${responseText}</p>`);
 					});
-                }
-            };
-        };
-    });
+				},
+			};
+		};
+	});
 
-	function openModal (callback) {
-		$.get(config.relative_path + '/canned-responses').done(function(data) {
-			data.hideControls = true;
+	function openModal(callback) {
+		require(['benchpress'], (Benchpress) => {
+			$.get(`${config.relative_path}/canned-responses`).done((data) => {
+				data.hideControls = true;
 
-			templates.parse('partials/canned-responses/list', data, function(html) {
-				var modal = bootbox.dialog({
+				Benchpress.parse('partials/canned-responses/list', data, (html) => {
+					const modal = bootbox.dialog({
 						title: 'Insert Canned Response',
 						message: html,
 						buttons: {
@@ -107,22 +108,23 @@ $(document).ready(function() {
 								label: 'Insert',
 								className: 'btn-primary',
 								callback: function () {
-									callback.call(this)
-								}
-							}
-						}
-					}),
-					submitEl = modal.find('.btn-primary').attr('disabled', 'disabled');
+									callback.call(this);
+								},
+							},
+						},
+					});
+					const submitEl = modal.find('.btn-primary').attr('disabled', 'disabled');
 
-				modal.find('.list-group').on('click', '.list-group-item', function() {
-					var responseEl = $(this);
-					responseEl.siblings().removeClass('active');
-					responseEl.addClass('active');
+					modal.find('.list-group').on('click', '.list-group-item', function () {
+						const responseEl = $(this);
+						responseEl.siblings().removeClass('active');
+						responseEl.addClass('active');
 
-					submitEl.data('text', ($(this).find('input[type="hidden"]').val()));
-					submitEl.removeAttr('disabled');
+						submitEl.data('text', ($(this).find('input[type="hidden"]').val()));
+						submitEl.removeAttr('disabled');
+					});
 				});
 			});
 		});
-	};
+	}
 });

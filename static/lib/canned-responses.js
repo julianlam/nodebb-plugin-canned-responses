@@ -1,45 +1,44 @@
 'use strict';
-/* globals define, templates, bootbox, RELATIVE_PATH, config, ajaxify, app */
 
-define(['vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function() {
-	var settings = {};
+/* globals define, config, $, app, window, ajaxify */
 
-	settings.init = function() {
-		$('button[data-action="create"]').on('click', function() {
-			templates.parse('partials/canned-responses/update', {}, function(html) {
-				var modal = bootbox.dialog({
+define(['benchpress', 'bootbox'], (Benchpress, bootbox) => {
+	const settings = {};
+
+	settings.init = function () {
+		$('button[data-action="create"]').on('click', () => {
+			Benchpress.parse('partials/canned-responses/update', {}, (html) => {
+				const modal = bootbox.dialog({
 					title: 'Create New Response',
 					message: html,
 					buttons: {
 						create: {
 							label: 'Save Response',
-							callback: settings.create
-						}
-					}
+							callback: settings.create,
+						},
+					},
 				});
 
-				modal.on('shown.bs.modal', function () {
-					modal.find('form').on('submit', function () {
-						return false;
-					});
+				modal.on('shown.bs.modal', () => {
+					modal.find('form').on('submit', () => false);
 				});
 			});
 		});
 
-		$('button[data-action="edit"]').on('click', function() {
-			var responseId = $(this).parents('.list-group-item').attr('data-response-id');
+		$('button[data-action="edit"]').on('click', function () {
+			const responseId = $(this).parents('.list-group-item').attr('data-response-id');
 
-			$.get(config.relative_path + '/api/user/' + app.user.userslug + '/canned-responses/' + responseId).done(function(data) {
-				templates.parse('partials/canned-responses/update', data, function(html) {
-					var modal = bootbox.dialog({
+			$.get(`${config.relative_path}/api/user/${app.user.userslug}/canned-responses/${responseId}`).done((data) => {
+				Benchpress.parse('partials/canned-responses/update', data, (html) => {
+					const modal = bootbox.dialog({
 						title: 'Edit Response',
 						message: html,
 						buttons: {
 							create: {
 								label: 'Save Response',
-								callback: settings.edit
-							}
-						}
+								callback: settings.edit,
+							},
+						},
 					});
 
 					modal.data('responseId', responseId);
@@ -50,14 +49,14 @@ define(['vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function
 		$('button[data-action="delete"]').on('click', settings.delete);
 	};
 
-	settings.create = function(e) {
-		var modal = $(e.target).parents('.modal'),
-			formEl = modal.find('form'),
-			payload = formEl.serializeObject();
+	settings.create = function (e) {
+		const modal = $(e.target).parents('.modal');
+		const formEl = modal.find('form');
+		const payload = formEl.serializeObject();
 
-		var payloadLen = formEl.find('[name="text"]').val().length;
+		const payloadLen = formEl.find('[name="text"]').val().length;
 		if (payloadLen > config.maximumPostLength) {
-			app.alertError('[[canned-responses:response-too-long, ' + config.maximumPostLength + ']]');
+			app.alertError(`[[canned-responses:response-too-long, ${config.maximumPostLength}]]`);
 			return false;
 		}
 
@@ -66,58 +65,58 @@ define(['vendor/jquery/serializeObject/jquery.ba-serializeobject.min'], function
 			url: window.location.href,
 			data: payload,
 			headers: {
-				'x-csrf-token': config.csrf_token
-			}
-		}).done(function() {
+				'x-csrf-token': config.csrf_token,
+			},
+		}).done(() => {
 			ajaxify.refresh();
 			modal.modal('hide');
-		}).fail(function() {
+		}).fail(() => {
 			app.alertError('Could not save new response');
 		});
 
 		return false;	// I normally use stopPropagation, but for bootbox that doesn't work...
 	};
 
-	settings.edit = function(e) {
-		var modal = $(e.target).parents('.modal'),
-			formEl = modal.find('form'),
-			payload = formEl.serializeObject(),
-			responseId = modal.data('responseId');
+	settings.edit = function (e) {
+		const modal = $(e.target).parents('.modal');
+		const formEl = modal.find('form');
+		const payload = formEl.serializeObject();
+		const responseId = modal.data('responseId');
 
-		var payloadLen = formEl.find('[name="text"]').val().length;
+		const payloadLen = formEl.find('[name="text"]').val().length;
 		if (payloadLen > config.maximumPostLength) {
-			app.alertError('[[canned-responses:response-too-long, ' + config.maximumPostLength + ']]');
+			app.alertError(`[[canned-responses:response-too-long, ${config.maximumPostLength}]]`);
 			return false;
 		}
 
 		$.ajax({
 			type: 'PUT',
-			url: window.location.href + '/' + responseId,
+			url: `${window.location.href}/${responseId}`,
 			data: payload,
 			headers: {
-				'x-csrf-token': config.csrf_token
-			}
-		}).done(function() {
+				'x-csrf-token': config.csrf_token,
+			},
+		}).done(() => {
 			ajaxify.refresh();
 			modal.modal('hide');
-		}).fail(function() {
+		}).fail(() => {
 			app.alertError('Could not update response');
 		});
 	};
 
-	settings.delete = function() {
-		var responseId = $(this).parents('.list-group-item').attr('data-response-id');
-		bootbox.confirm('Are you sure you want to delete this response?', function(confirm) {
+	settings.delete = function () {
+		const responseId = $(this).parents('.list-group-item').attr('data-response-id');
+		bootbox.confirm('Are you sure you want to delete this response?', (confirm) => {
 			if (confirm) {
 				$.ajax({
 					type: 'DELETE',
-					url: window.location.href + '/' + responseId,
+					url: `${window.location.href}/${responseId}`,
 					headers: {
-						'x-csrf-token': config.csrf_token
-					}
-				}).done(function() {
+						'x-csrf-token': config.csrf_token,
+					},
+				}).done(() => {
 					ajaxify.refresh();
-				}).fail(function(e) {
+				}).fail(() => {
 					app.alertError('Could not delete response');
 				});
 			}
