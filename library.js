@@ -1,19 +1,18 @@
-"use strict";
+'use strict';
 
-var controllers = require('./lib/controllers'),
-	middleware = require('./lib/middleware'),
+const controllers = require('./lib/controllers');
+const middleware = require('./lib/middleware');
 
-	plugin = {},
-	titleMatch = /^user\/.+\/canned-responses$/;
+const plugin = {};
+const titleMatch = /^user\/.+\/canned-responses$/;
 
-plugin.init = function(params, callback) {
-	var router = params.router,
-		hostMiddleware = params.middleware,
-		hostControllers = params.controllers,
-		routeHelpers = require.main.require('./src/routes/helpers'),
-		checks = [hostMiddleware.authenticate, hostMiddleware.exposeUid, middleware.restrictToProfileOwner],
-		ACPchecks = [hostMiddleware.authenticate, hostMiddleware.isAdmin];
-		
+plugin.init = function (params, callback) {
+	const { router } = params;
+	const hostMiddleware = params.middleware;
+	const routeHelpers = require.main.require('./src/routes/helpers');
+	const checks = [hostMiddleware.authenticate, hostMiddleware.exposeUid, middleware.restrictToProfileOwner];
+	const ACPchecks = [hostMiddleware.authenticate, hostMiddleware.isAdmin];
+
 	// ACP Routes
 	router.get('/admin/plugins/canned-responses', hostMiddleware.admin.buildHeader, controllers.renderAdminPage);
 	router.get('/api/admin/plugins/canned-responses', controllers.renderAdminPage);
@@ -36,7 +35,7 @@ plugin.init = function(params, callback) {
 	callback();
 };
 
-plugin.addProfileItem = function(data, callback) {
+plugin.addProfileItem = function (data, callback) {
 	data.links.push({
 		id: 'canned-responses',
 		route: 'canned-responses',
@@ -48,28 +47,28 @@ plugin.addProfileItem = function(data, callback) {
 			moderator: false,
 			globalMod: false,
 			admin: false,
-		}
+		},
 	});
 
 	callback(null, data);
 };
 
-plugin.addAdminNavigation = function(header, callback) {
+plugin.addAdminNavigation = function (header, callback) {
 	header.plugins.push({
 		route: '/plugins/canned-responses',
 		icon: 'fa-bullhorn',
-		name: '[[canned-responses:title]]'
+		name: '[[canned-responses:title]]',
 	});
 
 	callback(null, header);
 };
 
-plugin.addComposerButton = function(payload, callback) {
+plugin.addComposerButton = function (payload, callback) {
 	payload.options.push({ name: 'canned-responses', className: 'fa fa-bullhorn' });
 	callback(null, payload);
 };
 
-plugin.addTitles = function(data, callback) {
+plugin.addTitles = function (data, callback) {
 	if (titleMatch.test(data.fragment)) {
 		data.parsed = '[[canned-responses:title]]';
 	}
