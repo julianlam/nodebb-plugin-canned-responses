@@ -10,8 +10,13 @@ plugin.init = function (params, callback) {
 	const { router } = params;
 	const hostMiddleware = params.middleware;
 	const routeHelpers = require.main.require('./src/routes/helpers');
-	const checks = [hostMiddleware.authenticate, hostMiddleware.exposeUid, middleware.restrictToProfileOwner];
-	const ACPchecks = [hostMiddleware.authenticate, hostMiddleware.isAdmin];
+	const checks = [
+		hostMiddleware.authenticateRequest,
+		hostMiddleware.ensureLoggedIn,
+		hostMiddleware.exposeUid,
+		middleware.restrictToProfileOwner,
+	];
+	const ACPchecks = [hostMiddleware.authenticateRequest, hostMiddleware.ensureLoggedIn, hostMiddleware.isAdmin];
 
 	// ACP Routes
 	router.get('/admin/plugins/canned-responses', hostMiddleware.admin.buildHeader, controllers.renderAdminPage);
