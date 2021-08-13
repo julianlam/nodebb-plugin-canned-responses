@@ -16,7 +16,7 @@ plugin.init = function (params, callback) {
 		hostMiddleware.exposeUid,
 		middleware.restrictToProfileOwner,
 	];
-	const ACPchecks = [hostMiddleware.authenticateRequest, hostMiddleware.ensureLoggedIn, hostMiddleware.isAdmin];
+	const ACPchecks = [hostMiddleware.authenticateRequest, hostMiddleware.ensureLoggedIn];
 
 	// ACP Routes
 	router.get('/admin/plugins/canned-responses', hostMiddleware.admin.buildHeader, controllers.renderAdminPage);
