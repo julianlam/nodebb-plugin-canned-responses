@@ -1,11 +1,9 @@
 'use strict';
-/* globals $, app, socket */
 
-define('admin/plugins/canned-responses', ['settings', 'canned-responses'], function(Settings, cannedResponses) {
-
+define('admin/plugins/canned-responses', ['settings', 'canned-responses'], function (Settings, cannedResponses) {
 	var ACP = {};
 
-	ACP.init = function() {
+	ACP.init = function () {
 		cannedResponses.init();
 
 		// $('#save').on('click', function() {
@@ -28,16 +26,16 @@ define('admin/plugins/canned-responses', ['settings', 'canned-responses'], funct
 		// });
 		Settings.load('canned-responses:defaults', $('.canned-responses-defaults'));
 
-		$('#save').on('click', function() {
-			Settings.save('canned-responses:defaults', $('.canned-responses-defaults'), function() {
+		$('#save').on('click', function () {
+			Settings.save('canned-responses:defaults', $('.canned-responses-defaults'), function () {
 				app.alert({
 					type: 'success',
 					alert_id: 'canned-responses-saved',
 					title: 'Settings Saved',
 					message: 'Please reload your NodeBB to apply these settings',
-					clickfn: function() {
+					clickfn: function () {
 						socket.emit('admin.reload');
-					}
+					},
 				});
 			});
 		});

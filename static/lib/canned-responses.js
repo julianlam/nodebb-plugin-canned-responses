@@ -1,7 +1,5 @@
 'use strict';
 
-/* globals define, config, $, app, window, ajaxify */
-
 define(['benchpress', 'bootbox'], (Benchpress, bootbox) => {
 	const settings = {};
 

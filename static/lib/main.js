@@ -1,7 +1,5 @@
 'use strict';
 
-/* globals bootbox, config, document, window, $ */
-
 $(document).ready(() => {
 	let defaults;
 
