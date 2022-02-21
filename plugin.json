@@ -16,14 +16,12 @@
 		"static/style.less"
 	],
 	"scripts": [
-		"static/lib/main.js",
-		"static/lib/client-settings.js"
-	],
-	"acpScripts": [
-		"static/lib/admin.js"
+		"static/lib/main.js"
 	],
 	"modules": {
-		"canned-responses.js": "static/lib/canned-responses.js"
+		"canned-responses.js": "static/lib/canned-responses.js",
+		"../client/account/canned-responses.js": "static/lib/client-settings.js",
+		"../admin/plugins/canned-responses.js": "static/lib/admin.js"
 	},
 	"templates": "static/templates",
 	"languages": "static/language"
