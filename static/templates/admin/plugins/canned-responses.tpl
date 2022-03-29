@@ -16,17 +16,17 @@
 		</p>
 		<div class="row category-defaults">
 			<form role="form" class="canned-responses-defaults">
-				<!-- BEGIN categories -->
+				{{{ each categories }}}
 				<div class="form-group col-sm-4 col-xs-6">
 					<label for="{../cid}">{../name}</label>
 					<select data-cid="{../cid}" id="{../cid}" name="{../cid}" title="{../name}" class="form-control">
 						<option value="">None</option>
-						<!-- BEGIN responses -->
+						{{{ each responses }}}
 						<option value="{../id}">{../title}</option>
-						<!-- END responses -->
+						{{{ end }}}
 					</select>
 				</div>
-				<!-- END categories -->
+				{{{ end }}}
 			</form>
 		</div>
 	</div>
