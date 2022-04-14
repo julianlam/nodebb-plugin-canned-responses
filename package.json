@@ -37,7 +37,7 @@
     "recommended": "^1.17.0"
   },
   "dependencies": {
-    "async": "^2",
+    "async": "^3",
     "validator": "^13.7.0"
   },
   "devDependencies": {
