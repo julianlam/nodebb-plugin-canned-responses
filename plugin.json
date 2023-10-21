@@ -9,12 +9,6 @@
 		{ "hook": "filter:composer.formatting", "method": "addComposerButton" },
 		{ "hook": "filter:parse.title", "method": "addTitles" }
 	],
-	"staticDirs": {
-		"static": "./static"
-	},
-	"less": [
-		"static/style.less"
-	],
 	"scripts": [
 		"static/lib/main.js"
 	],

@@ -16,18 +16,18 @@ plugin.init = function (params, callback) {
 		hostMiddleware.exposeUid,
 		middleware.restrictToProfileOwner,
 	];
+
 	const ACPchecks = [hostMiddleware.authenticateRequest, hostMiddleware.ensureLoggedIn];
 
 	// ACP Routes
-	router.get('/admin/plugins/canned-responses', hostMiddleware.admin.buildHeader, controllers.renderAdminPage);
-	router.get('/api/admin/plugins/canned-responses', controllers.renderAdminPage);
+	routeHelpers.setupAdminPageRoute(router, '/admin/plugins/canned-responses', controllers.renderAdminPage);
 	router.route('/admin/plugins/canned-responses/:responseId?')
 		.post(ACPchecks, controllers.addGlobal)
 		.delete(ACPchecks, controllers.delete)
 		.put(ACPchecks, controllers.update);
 
 	// User settings routes
-	routeHelpers.setupPageRoute(router, '/user/:userslug/canned-responses/:responseId?', hostMiddleware, checks, controllers.get);
+	routeHelpers.setupPageRoute(router, '/user/:userslug/canned-responses/:responseId?', checks, controllers.get);
 	router.route('/user/:userslug/canned-responses/:responseId?')
 		.post(checks, controllers.add)
 		.delete(checks, controllers.delete)
@@ -69,7 +69,11 @@ plugin.addAdminNavigation = function (header, callback) {
 };
 
 plugin.addComposerButton = function (payload, callback) {
-	payload.options.push({ name: 'canned-responses', className: 'fa fa-bullhorn' });
+	payload.options.push({
+		name: 'canned-responses',
+		className: 'fa fa-bullhorn',
+		title: 'Canned Responses',
+	});
 	callback(null, payload);
 };
 

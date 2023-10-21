@@ -100,6 +100,7 @@ $(document).ready(() => {
 				Benchpress.parse('partials/canned-responses/list', data, (html) => {
 					const modal = bootbox.dialog({
 						title: 'Insert Canned Response',
+						size: 'large',
 						message: html,
 						buttons: {
 							insert: {

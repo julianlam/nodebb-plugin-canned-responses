@@ -4,8 +4,8 @@
 	<div class="list-group-item" data-response-id="{responses.id}">
 		<!-- IF !hideControls -->
 		<div class="btn-group pull-right">
-			<button type="button" class="btn btn-default btn-xs" data-action="edit"><i class="fa fa-edit"></i> Edit</button>
-			<button type="button" class="btn btn-danger btn-xs" data-action="delete"><i class="fa fa-times"></i> Delete</button>
+			<button type="button" class="btn btn-default btn-sm" data-action="edit"><i class="fa fa-edit"></i> Edit</button>
+			<button type="button" class="btn btn-danger btn-sm" data-action="delete"><i class="fa fa-times"></i> Delete</button>
 		</div>
 		<!-- ENDIF !hideControls -->
 		<input type="hidden" value="{responses.text}" />
