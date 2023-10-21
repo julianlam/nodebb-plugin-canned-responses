@@ -1,11 +1,11 @@
 'use strict';
 
-define(['benchpress', 'bootbox'], (Benchpress, bootbox) => {
+define(['benchpress', 'bootbox', 'alerts'], (Benchpress, bootbox, alerts) => {
 	const settings = {};
 
 	settings.init = function () {
 		$('button[data-action="create"]').on('click', () => {
-			Benchpress.parse('partials/canned-responses/update', {}, (html) => {
+			Benchpress.render('partials/canned-responses/update', {}).then((html) => {
 				const modal = bootbox.dialog({
 					title: 'Create New Response',
 					message: html,
@@ -27,7 +27,7 @@ define(['benchpress', 'bootbox'], (Benchpress, bootbox) => {
 			const responseId = $(this).parents('.list-group-item').attr('data-response-id');
 
 			$.get(`${config.relative_path}/api/user/${app.user.userslug}/canned-responses/${responseId}`).done((data) => {
-				Benchpress.parse('partials/canned-responses/update', data, (html) => {
+				Benchpress.render('partials/canned-responses/update', data).then((html) => {
 					const modal = bootbox.dialog({
 						title: 'Edit Response',
 						message: html,
@@ -54,7 +54,7 @@ define(['benchpress', 'bootbox'], (Benchpress, bootbox) => {
 
 		const payloadLen = formEl.find('[name="text"]').val().length;
 		if (payloadLen > config.maximumPostLength) {
-			app.alertError(`[[canned-responses:response-too-long, ${config.maximumPostLength}]]`);
+			alerts.error(`[[canned-responses:response-too-long, ${config.maximumPostLength}]]`);
 			return false;
 		}
 
@@ -69,10 +69,10 @@ define(['benchpress', 'bootbox'], (Benchpress, bootbox) => {
 			ajaxify.refresh();
 			modal.modal('hide');
 		}).fail(() => {
-			app.alertError('Could not save new response');
+			alerts.error('Could not save new response');
 		});
 
-		return false;	// I normally use stopPropagation, but for bootbox that doesn't work...
+		return false; // I normally use stopPropagation, but for bootbox that doesn't work...
 	};
 
 	settings.edit = function (e) {
@@ -83,13 +83,13 @@ define(['benchpress', 'bootbox'], (Benchpress, bootbox) => {
 
 		const payloadLen = formEl.find('[name="text"]').val().length;
 		if (payloadLen > config.maximumPostLength) {
-			app.alertError(`[[canned-responses:response-too-long, ${config.maximumPostLength}]]`);
+			alerts.error(`[[canned-responses:response-too-long, ${config.maximumPostLength}]]`);
 			return false;
 		}
 
 		$.ajax({
 			type: 'PUT',
-			url: `${window.location.href}/${responseId}`,
+			url: `${window.location.pathname}/${responseId}`,
 			data: payload,
 			headers: {
 				'x-csrf-token': config.csrf_token,
@@ -98,7 +98,7 @@ define(['benchpress', 'bootbox'], (Benchpress, bootbox) => {
 			ajaxify.refresh();
 			modal.modal('hide');
 		}).fail(() => {
-			app.alertError('Could not update response');
+			alerts.error('Could not update response');
 		});
 	};
 
@@ -115,12 +115,12 @@ define(['benchpress', 'bootbox'], (Benchpress, bootbox) => {
 				}).done(() => {
 					ajaxify.refresh();
 				}).fail(() => {
-					app.alertError('Could not delete response');
+					alerts.error('Could not delete response');
 				});
 			}
 		});
 
-		return false;	// I normally use stopPropagation, but for bootbox that doesn't work...
+		return false; // I normally use stopPropagation, but for bootbox that doesn't work...
 	};
 
 	return settings;
