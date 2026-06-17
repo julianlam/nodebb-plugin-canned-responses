@@ -1,7 +1,7 @@
 'use strict';
 
 define('forum/account/canned-responses', ['canned-responses'], function (cannedResponses) {
-	var settings = {};
+	const settings = {};
 
 	settings.init = cannedResponses.init;
 	return settings;

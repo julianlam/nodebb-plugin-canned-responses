@@ -1,7 +1,7 @@
 'use strict';
 
 define('admin/plugins/canned-responses', ['settings', 'canned-responses', 'alerts'], function (Settings, cannedResponses, alerts) {
-	var ACP = {};
+	const ACP = {};
 
 	ACP.init = function () {
 		cannedResponses.init();

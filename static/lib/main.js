@@ -93,35 +93,34 @@ $(document).ready(() => {
 	});
 
 	function openModal(callback) {
-		require(['benchpress'], (Benchpress) => {
-			$.get(`${config.relative_path}/canned-responses`).done((data) => {
+		require(['modals'], (modals) => {
+			$.get(`${config.relative_path}/canned-responses`).done(async (data) => {
 				data.hideControls = true;
-
-				Benchpress.parse('partials/canned-responses/list', data, (html) => {
-					const modal = bootbox.dialog({
-						title: 'Insert Canned Response',
-						size: 'large',
-						message: html,
-						buttons: {
-							insert: {
-								label: 'Insert',
-								className: 'btn-primary',
-								callback: function () {
-									callback.call(this);
-								},
+				const html = await app.parseAndTranslate('partials/canned-responses/list', data);
+				const modal = await modals.dialog({
+					title: 'Insert Canned Response',
+					size: 'large',
+					message: html,
+					buttons: {
+						insert: {
+							label: 'Insert',
+							className: 'btn-primary',
+							callback: function () {
+								callback.call(this);
 							},
 						},
-					});
-					const submitEl = modal.find('.btn-primary').attr('disabled', 'disabled');
+					},
+				});
 
-					modal.find('.list-group').on('click', '.list-group-item', function () {
-						const responseEl = $(this);
-						responseEl.siblings().removeClass('active');
-						responseEl.addClass('active');
+				const submitEl = modal.find('.btn-primary').attr('disabled', 'disabled');
 
-						submitEl.data('text', ($(this).find('input[type="hidden"]').val()));
-						submitEl.removeAttr('disabled');
-					});
+				modal.find('.list-group').on('click', '.list-group-item', function () {
+					const responseEl = $(this);
+					responseEl.siblings().removeClass('active');
+					responseEl.addClass('active');
+
+					submitEl.data('text', ($(this).find('input[type="hidden"]').val()));
+					submitEl.removeAttr('disabled');
 				});
 			});
 		});

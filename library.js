@@ -9,7 +9,7 @@ const titleMatch = /^user\/.+\/canned-responses$/;
 plugin.init = function (params, callback) {
 	const { router } = params;
 	const hostMiddleware = params.middleware;
-	const routeHelpers = require.main.require('./src/routes/helpers');
+	const routeHelpers = nodebb.require('./src/routes/helpers');
 	const checks = [
 		hostMiddleware.authenticateRequest,
 		hostMiddleware.ensureLoggedIn,
