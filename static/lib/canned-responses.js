@@ -1,46 +1,44 @@
 'use strict';
 
-define(['benchpress', 'bootbox', 'alerts'], (Benchpress, bootbox, alerts) => {
+define(['benchpress', 'modals', 'alerts'], (Benchpress, modals, alerts) => {
 	const settings = {};
 
 	settings.init = function () {
-		$('button[data-action="create"]').on('click', () => {
-			Benchpress.render('partials/canned-responses/update', {}).then((html) => {
-				const modal = bootbox.dialog({
-					title: 'Create New Response',
-					message: html,
-					buttons: {
-						create: {
-							label: 'Save Response',
-							callback: settings.create,
-						},
+		$('button[data-action="create"]').on('click', async () => {
+			const html = await Benchpress.render('partials/canned-responses/update', {});
+			const modal = await modals.dialog({
+				title: 'Create New Response',
+				message: html,
+				buttons: {
+					create: {
+						label: 'Save Response',
+						callback: settings.create,
 					},
-				});
+				},
+			});
 
-				modal.on('shown.bs.modal', () => {
-					modal.find('form').on('submit', () => false);
-				});
+			modal.on('shown.bs.modal', () => {
+				modal.find('form').on('submit', () => false);
 			});
 		});
 
 		$('button[data-action="edit"]').on('click', function () {
 			const responseId = $(this).parents('.list-group-item').attr('data-response-id');
 
-			$.get(`${config.relative_path}/api/user/${app.user.userslug}/canned-responses/${responseId}`).done((data) => {
-				Benchpress.render('partials/canned-responses/update', data).then((html) => {
-					const modal = bootbox.dialog({
-						title: 'Edit Response',
-						message: html,
-						buttons: {
-							create: {
-								label: 'Save Response',
-								callback: settings.edit,
-							},
+			$.get(`${config.relative_path}/api/user/${app.user.userslug}/canned-responses/${responseId}`).done(async (data) => {
+				const html = await Benchpress.render('partials/canned-responses/update', data);
+				const modal = await modals.dialog({
+					title: 'Edit Response',
+					message: html,
+					buttons: {
+						create: {
+							label: 'Save Response',
+							callback: settings.edit,
 						},
-					});
-
-					modal.data('responseId', responseId);
+					},
 				});
+
+				modal.data('responseId', responseId);
 			});
 		});
 
@@ -72,7 +70,7 @@ define(['benchpress', 'bootbox', 'alerts'], (Benchpress, bootbox, alerts) => {
 			alerts.error('Could not save new response');
 		});
 
-		return false; // I normally use stopPropagation, but for bootbox that doesn't work...
+		return false;
 	};
 
 	settings.edit = function (e) {
@@ -104,7 +102,7 @@ define(['benchpress', 'bootbox', 'alerts'], (Benchpress, bootbox, alerts) => {
 
 	settings.delete = function () {
 		const responseId = $(this).parents('.list-group-item').attr('data-response-id');
-		bootbox.confirm('Are you sure you want to delete this response?', (confirm) => {
+		modals.confirm('Are you sure you want to delete this response?', (confirm) => {
 			if (confirm) {
 				$.ajax({
 					type: 'DELETE',
@@ -120,7 +118,7 @@ define(['benchpress', 'bootbox', 'alerts'], (Benchpress, bootbox, alerts) => {
 			}
 		});
 
-		return false; // I normally use stopPropagation, but for bootbox that doesn't work...
+		return false;
 	};
 
 	return settings;
