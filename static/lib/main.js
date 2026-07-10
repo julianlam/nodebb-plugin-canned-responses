@@ -93,10 +93,10 @@ $(document).ready(() => {
 	});
 
 	function openModal(callback) {
-		require(['modals'], (modals) => {
+		require(['benchpress', 'modals'], (Benchpress, modals) => {
 			$.get(`${config.relative_path}/canned-responses`).done(async (data) => {
 				data.hideControls = true;
-				const html = await app.parseAndTranslate('partials/canned-responses/list', data);
+				const html = await Benchpress.render('partials/canned-responses/list', data);
 				const modal = await modals.dialog({
 					title: 'Insert Canned Response',
 					size: 'large',
