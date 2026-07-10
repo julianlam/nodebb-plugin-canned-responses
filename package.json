@@ -36,17 +36,16 @@
   },
   "readmeFilename": "README.md",
   "nbbpm": {
-    "compatibility": "^3.14.0"
+    "compatibility": "^4.15.0"
   },
   "dependencies": {
-    "async": "^3",
-    "validator": "^13.15.35"
+    "async": "^3"
   },
   "devDependencies": {
     "@commitlint/cli": "12.0.1",
     "@commitlint/config-angular": "12.0.1",
-    "eslint": "10.5.0",
-    "eslint-config-nodebb": "^2.0.2",
+    "eslint": "10.6.0",
+    "eslint-config-nodebb": "^2.0.3",
     "husky": "5.1.3",
     "lint-staged": "10.5.4"
   }

@@ -4,8 +4,8 @@
 			<h4 class="fw-bold tracking-tight mb-0">{title}</h4>
 		</div>
 		<div class="col-12 col-md-4 px-0 px-md-3 text-end">
-			<button id="add" class="btn btn-light btn-sm fw-semibold ff-secondary text-center" data-action="create">[[admin/admin:add]]</button>
-			<button id="save" class="btn btn-primary btn-sm fw-semibold ff-secondary text-center text-nowrap">[[admin/admin:save-changes]]</button>
+			<button id="add" class="btn btn-light btn-sm fw-semibold ff-secondary text-center" data-action="create">{{tx("admin/admin:add")}}</button>
+			<button id="save" class="btn btn-primary btn-sm fw-semibold ff-secondary text-center text-nowrap">{{tx("admin/admin:save-changes")}}</button>
 		</div>
 	</div>
 

@@ -10,7 +10,7 @@
 		<!-- ENDIF !hideControls -->
 		<input type="hidden" value="{responses.text}" />
 		<h4 class="list-group-item-heading">{responses.title}</h4>
-		<p class="list-group-item-text">{{txEscape(responses.html)}}</p>
+		<p class="list-group-item-text">{{responses.html}}</p>
 	</div>
 	<!-- END responses -->
 </div>
